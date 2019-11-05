@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cors = require("cors")
 
 // Import base routes
 const indexRouter = require('./routes/index');
@@ -30,6 +31,9 @@ const app = express();
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'pug');
+
+// Enable CORS
+app.use(cors())
 
 // Setup logger and body parser
 app.use(morgan('dev'));
