@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 const { check } = require('express-validator');
 const { checkValidation } = require('../middlewares/validation');
-const { JWT_SECRET } = require('../middlewares/auth');
+const { JWT_SECRET, isAuth } = require('../middlewares/auth');
 
 router.get('/', function(req, res) {
   res.json({message: "I'm alive"});
@@ -36,6 +36,15 @@ router.post('/login', [
       expiresIn: 3600
     };
     res.json(bodyResponse);
+  });
+});
+
+router.get("/me", isAuth, function(req, res) {
+  User.findOne({_id: res.locals.authInfo.userId}, "-password")
+  .exec(function(err, user) {
+    if(err) return res.status(500).json({error:err});
+    if(!user) return res.status(404).json({message: 'User not found'})
+    return res.json(user);
   });
 });
 
