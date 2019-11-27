@@ -95,7 +95,7 @@ router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
   });
 });
 
-router.put('/addLike/:id', autenticationMiddleware.isAuth, [
+router.put('/pushLike/:id', autenticationMiddleware.isAuth, [
   check('tweet').isString().isLength({ min: 1, max: 120 })
 ], checkValidation, function (req, res, next) {
   Tweet.findOne({ _id: req.params.id }).exec(function (err, tweet) {
@@ -106,6 +106,7 @@ router.put('/addLike/:id', autenticationMiddleware.isAuth, [
       });
     }
     if (!tweet) {
+      console.log("tweet non trovato");
       return res.status(404).json({
         message: "Tweet not found"
       })
@@ -117,4 +118,5 @@ router.put('/addLike/:id', autenticationMiddleware.isAuth, [
     });
   });
 });
+
 module.exports = router;
