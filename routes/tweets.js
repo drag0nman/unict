@@ -95,4 +95,26 @@ router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
   });
 });
 
+router.put('/addLike/:id', autenticationMiddleware.isAuth, [
+  check('tweet').isString().isLength({ min: 1, max: 120 })
+], checkValidation, function (req, res, next) {
+  Tweet.findOne({ _id: req.params.id }).exec(function (err, tweet) {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        message: "Error reading the tweet"
+      });
+    }
+    if (!tweet) {
+      return res.status(404).json({
+        message: "Tweet not found"
+      })
+    }    
+    tweet.like = req.body.like;
+    tweet.save(function (err) {
+      if (err) return res.status(500).json({ error: err });
+      res.json(tweet);
+    });
+  });
+});
 module.exports = router;
