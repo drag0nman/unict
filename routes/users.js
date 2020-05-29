@@ -49,7 +49,7 @@ router.post('/', [
   });
 });
 
-router.put('/:id', autenticationMiddleware.isAuth, function(request, response, next) {
+router.put('/:id', function(request, response, next) {
   if (response.locals.authInfo.userId !== request.params.id) {
     return response.status(401).json({
       error: "Unauthorized",
@@ -70,7 +70,7 @@ router.put('/:id', autenticationMiddleware.isAuth, function(request, response, n
   });
 });
 
-router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
+router.delete('/:id', function(req, res, next) {
   if (res.locals.authInfo.userId !== req.params.id) {
     return res.status(401).json({
       error: "Unauthorized",
