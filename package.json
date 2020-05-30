@@ -5,8 +5,8 @@
   "main": "bin/www",
   "scripts": {
     "start": "node bin/www",
-    "pretest": "rm -rf coverage",
-    "test": "nyc --reporter=html --reporter=text mocha test --timeout=5000"
+    "pretest": "sh ./scripts/env-default.sh && rm -rf coverage",
+    "test": "ENVFILE=test nyc --reporter=html --reporter=text --reporter=lcovonly mocha -- --timeout 5000 --report lcovonly --exit -R spec $(find ./test -name \"*.spec.js\" -not -path \"./node_modules/*\")"
   },
   "author": "Daniele Manni",
   "license": "ISC",

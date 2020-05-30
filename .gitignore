@@ -4,4 +4,5 @@ node_modules
 coverage
 .nyc_output
 html
-DS_STORE
+.DS_STORE
+.env
