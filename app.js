@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require("cors")
+const cors = require('cors')
 
 // Import base routes
 const indexRouter = require('./routes/index');
@@ -14,6 +14,11 @@ const host = 'localhost';
 const dbName = 'unict-innovation';
 
 const mongoose = require('mongoose');
+
+if (process.env.NODE_ENV === 'test') {
+  dbName = 'unict-innovation-test';
+}
+
 mongoose.set('useCreateIndex', true);
 mongoose.connect('mongodb://'+ host + '/' + dbName);
 

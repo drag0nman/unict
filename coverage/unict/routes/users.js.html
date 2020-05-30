@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.18% </span>
+                <span class="strong">23.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/55</span>
+                <span class='fraction'>13/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/26</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.48% </span>
+                <span class="strong">28.26% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/46</span>
+                <span class='fraction'>13/46</span>
             </div>
         
             
@@ -158,17 +158,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -247,18 +247,18 @@ const User = require('../models/user');
 const autenticationMiddleware = require('../middlewares/auth');
 const { checkValidation } = require('../middlewares/validation');
 &nbsp;
-router.get('/', function(req, res, next) {
-  User.find({}, "-password", function(err, users){
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) <span class="cstat-no" title="statement not covered" >return res.status(500).json({error: err});</span>
-    res.json(users);
+router.get('/', <span class="fstat-no" title="function not covered" >fu</span>nction(req, res, next) {
+<span class="cstat-no" title="statement not covered" >  User.find({}, "-password", <span class="fstat-no" title="function not covered" >fu</span>nction(err, users){</span>
+<span class="cstat-no" title="statement not covered" >    if (err) <span class="cstat-no" title="statement not covered" >return res.status(500).json({error: err});</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json(users);</span>
   });
 });
 &nbsp;
-router.get('/:id', function(req, res, next) {
-  User.findOne({_id: req.params.id}, "-password", function(err, user){
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) <span class="cstat-no" title="statement not covered" >return res.status(500).json({error: err});</span>
-    if(!user) return res.status(404).json({message: 'User not found'})
-    res.json(user);
+router.get('/:id', <span class="fstat-no" title="function not covered" >fu</span>nction(req, res, next) {
+<span class="cstat-no" title="statement not covered" >  User.findOne({_id: req.params.id}, "-password", <span class="fstat-no" title="function not covered" >fu</span>nction(err, user){</span>
+<span class="cstat-no" title="statement not covered" >    if (err) <span class="cstat-no" title="statement not covered" >return res.status(500).json({error: err});</span></span>
+<span class="cstat-no" title="statement not covered" >    if(!user) <span class="cstat-no" title="statement not covered" >return res.status(404).json({message: 'User not found'})</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json(user);</span>
   });
 });
 &nbsp;
@@ -334,7 +334,7 @@ module.exports = router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat May 30 2020 09:36:50 GMT+0200 (GMT+02:00)
+                at Sat May 30 2020 10:22:28 GMT+0200 (GMT+02:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
