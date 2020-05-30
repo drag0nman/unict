@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require("cors")
+const cors = require('cors');
 
 // Import base routes
 const indexRouter = require('./routes/index');
@@ -15,13 +15,16 @@ const dbName = 'unict-innovation';
 
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-mongoose.connect('mongodb://'+ host + '/' + dbName);
+mongoose.connect('mongodb://' + host + '/' + dbName, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
-db.on('error', function() {
-  console.error('Connection error!')
+db.on('error', function () {
+  console.error('Connection error!');
 });
-db.once('open', function() {
+db.once('open', function () {
   console.log('DB connection Ready');
 });
 
@@ -33,7 +36,7 @@ const app = express();
 // app.set('view engine', 'pug');
 
 // Enable CORS
-app.use(cors())
+app.use(cors());
 
 // Setup logger and body parser
 app.use(morgan('dev'));
@@ -48,18 +51,18 @@ app.use('/users', userRouter);
 app.use('/tweets', tweetRouter);
 
 // Catch 404 errors
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // Error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: err
+    error: err,
   });
 });
 
