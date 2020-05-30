@@ -71,12 +71,12 @@ router.put('/:id', function(request, response, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-  if (res.locals.authInfo.userId !== req.params.id) {
-    return res.status(401).json({
-      error: "Unauthorized",
-      message: "You are not the owner of the resource"
-    });
-  }
+  // if (res.locals.authInfo.userId !== req.params.id) {
+  //   return res.status(401).json({
+  //     error: "Unauthorized",
+  //     message: "You are not the owner of the resource"
+  //   });
+  // }
   User.findOne({_id: req.params.id})
     .exec(function(err, user) {
       if(err) return res.status(500).json({error: err});
