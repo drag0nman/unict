@@ -1,15 +1,30 @@
 const User = require('../../models/user');
 const Tweet = require('../../models/tweet');
 
+const mongoose = require('mongoose');
+var user = undefined;
+
 module.exports.createTweet = async () => {
-  const user = await User.create({
+  User.deleteMany({});
+  user = await User.create({
     name: 'Manuel',
     surname: 'Caruso',
     email: 'manuel.caruso@stevejobs.academy',
-    password: ' ',
+    password: 'pass',
   });
-  return (tweet = await Tweet.create({
+  const tweet = await Tweet.create({
     _author: user._id,
     tweet: 'Example',
-  }));
+  });
+  return tweet;
+};
+
+module.exports.deleteTweet = (tweet) => {
+  tweet ? tweet.remove() : console.log('cannot delete tweet');
+  user ? user.remove() : console.log('cannot delete user');
+};
+
+module.exports.deleteAll = () => {
+  User.deleteMany({});
+  Tweet.deleteMany({});
 };
