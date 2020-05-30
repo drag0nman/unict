@@ -13,8 +13,8 @@ describe.only('[INDEX] GET /users/', () => {
     expect(result.header).to.have.property('content-type');
     expect(result.header).to.have.property('content-type').contains('application/json');
     expect(result.status).to.equal(200);
-    // expect(result.body).to.be.instanceof(Array);
-    // expect(result.body).to.have.lengthOf(0);
+    expect(result.body).to.be.instanceof(Array);
+    expect(result.body).to.have.lengthOf(0);
   });
   describe('User inside DB', () => {
     const newUser = {
