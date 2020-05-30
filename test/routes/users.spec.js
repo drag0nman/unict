@@ -18,6 +18,16 @@ describe('Get: /users', () => {
         expectJson(result);
     })
 })
+
+describe('[show] Get: /users/:id', () => {
+    it('Status 404', async () => {
+        const result = await chai.request(app).get('/users');
+        expect(result.status).to.be.equal(404);
+        expect(result).to.have.property('body');
+        expect(result.body).to.be.deep.equals({message: 'User not found'});
+    });
+});
+
 describe('Post /users', () => {
     let createdUser = undefined;
     before('create user', async () => {
