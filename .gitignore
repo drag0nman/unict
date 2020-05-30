@@ -1,2 +1,7 @@
 node_modules
 yarn-error.log
+node_modules
+coverage
+.nyc_output
+html
+DS_STORE

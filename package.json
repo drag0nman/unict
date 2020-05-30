@@ -5,7 +5,8 @@
   "main": "bin/www",
   "scripts": {
     "start": "node bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "rm -rf coverage",
+    "test": "nyc --reporter=html --reporter=text mocha test --timeout=5000"
   },
   "author": "Daniele Manni",
   "license": "ISC",
@@ -17,5 +18,11 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.6",
     "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^7.2.0",
+    "nyc": "^15.0.1"
   }
 }
