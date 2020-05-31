@@ -28,7 +28,7 @@ router.post('/', [
   check('surname').isString(),
   check('email').isEmail(),
   check('password').isString().isLength({ min: 5 })
-], function(req, res, next) {
+], checkValidation, function(req, res, next) {
   const newUser = new User(req.body);
   newUser.password = new Buffer(
       crypto.createHash('sha256').update(req.body.password, 'utf8').digest()

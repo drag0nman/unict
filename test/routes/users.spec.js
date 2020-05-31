@@ -5,7 +5,6 @@ const app = require('../../app');
 const { expectJson, createUser } = require('./utils/index');
 const User = require('../../models/user');
 const crypto = require('crypto');
-const { expectJson } = require('./utils/index');
 const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
