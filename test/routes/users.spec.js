@@ -20,11 +20,16 @@ describe('Get: /users', () => {
 })
 
 describe('[show] Get: /users/:id', () => {
-    it('Status 404', async () => {
-        const result = await chai.request(app).get('/users');
+    it('Status 404 if errate user', async () => {
+        const newObjectId = mongoose.Types.ObjectId();
+        const result = await chai.request(app).get(`/users/${newObjectId}`);
+        const expectedResponse = { message: 'User not found'};
         expect(result.status).to.be.equal(404);
         expect(result).to.have.property('body');
-        expect(result.body).to.be.deep.equals({message: 'User not found'});
+        expect(result.body).to.be.deep.equals(expectedResponse);
+        expect(result).to.have.property('status', 404);
+        expect(result.header).to.has.property('content-type');
+        expect(result.header['content-type']).contains('application/json');
     });
 });
 
