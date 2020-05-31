@@ -25,7 +25,7 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-router.post('/',autenticationMiddleware.isAuth, [
+router.post('/', [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);

@@ -1,8 +1,9 @@
 const chai = require('chai');
 const expect = chai.expect;
 const crypto = require('crypto');
-
+const mongoose = require("mongoose");
 const User = require('../../../models/user');
+const Tweet = require('../../../models/tweet');
 
 module.exports.expectJson = function(request) {
   expect(request.header).to.has.property('content-type');
@@ -23,3 +24,11 @@ module.exports.createUser = async function () {
 
   return await User.create(newUser);
 };
+
+module.exports.createTweet = async () => {
+    const newTweet = {
+      _author: mongoose.Types.ObjectId(),
+      tweet: "Welcome!",
+    };
+    return await Tweet.create(newTweet);
+  };
