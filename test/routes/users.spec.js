@@ -5,6 +5,7 @@ const app = require('../../app');
 const { expectJson, createUser } = require('./utils/index');
 const User = require('../../models/user');
 const crypto = require('crypto');
+const { expectJson } = require('./utils/index');
 const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
@@ -18,6 +19,20 @@ describe('Get: /users', () => {
         expectJson(result);
     })
 })
+
+describe('[show] Get: /users/:id', () => {
+    it('Status 404 if errate user', async () => {
+        const newObjectId = mongoose.Types.ObjectId();
+        const result = await chai.request(app).get(`/users/${newObjectId}`);
+        const expectedResponse = { message: 'User not found'};
+        expect(result.status).to.be.equal(404);
+        expect(result).to.have.property('body');
+        expect(result.body).to.be.deep.equals(expectedResponse);
+        expect(result).to.have.property('status', 404);
+        expectJson(result);
+    });
+});
+
 describe('Post /users', () => {
     let createdUser = undefined;
     before('create user', async () => {
