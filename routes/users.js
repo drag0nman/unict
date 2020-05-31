@@ -49,13 +49,7 @@ router.post('/', [
   });
 });
 
-router.put('/:id', autenticationMiddleware.isAuth, function(request, response, next) {
-  if (response.locals.authInfo.userId !== request.params.id) {
-    return response.status(401).json({
-      error: "Unauthorized",
-      message: "You are not the owner of the resource"
-    });
-  }
+router.put('/:id', function (request, response, next) {
   User.findOne({_id: request.params.id})
   .exec(function(err, user) {
     if(err) return response.status(500).json({error:err});
@@ -70,13 +64,7 @@ router.put('/:id', autenticationMiddleware.isAuth, function(request, response, n
   });
 });
 
-router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
-  if (res.locals.authInfo.userId !== req.params.id) {
-    return res.status(401).json({
-      error: "Unauthorized",
-      message: "You are not the owner of the resource"
-    });
-  }
+router.delete('/:id', function(req, res, next) {
   User.findOne({_id: req.params.id})
     .exec(function(err, user) {
       if(err) return res.status(500).json({error: err});
