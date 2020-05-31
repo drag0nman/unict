@@ -2,12 +2,14 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 const app = require('../../app');
+const { expectJson } = require('./utils/index');
+const Tweet = require('../../../models/tweet');
 const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
 describe('Get: /tweets/:id', () => {
-    it('Error 404 if Tweet not found', async () => {
+    it('Test tweet response body 404', async () => {
         const newObjectId = mongoose.Types.ObjectId();
         const result = await chai.request(app).get(`/tweets/${newObjectId}`);
         const expectedResponse = { message: 'Tweet not found'};
@@ -15,34 +17,26 @@ describe('Get: /tweets/:id', () => {
         expect(result).to.have.property('body');
         expect(result.body).to.be.deep.equals(expectedResponse);
         expect(result).to.have.property('status', 404);
+        expectJson(result);
     });
 });
 
 describe('Put: /tweets/:id', () => {
-    it('Error 500 reading the tweet', async () => {
+    it('Test tweet response body 400', async () => {
         const newObjectId = mongoose.Types.ObjectId();
         const result = await chai.request(app).put(`/tweets/${newObjectId}`)
-        const expectedResponse = {message: 'Error reading the tweet'};
         expect(result).to.have.property('body');
-        expect(result.body).to.be.deep.equals(expectedResponse);
-        expect(result).to.have.property('status', 500);
+        expect(result).to.have.property('status', 400);
+        expectJson(result);
     });
-    it('Error 404 if tweet not found', async () => {
-        const newObjectId = mongoose.Types.ObjectId();
-        const result = await chai.request(app).put(`/tweets/${newObjectId}`);
-        const expectedResponse = { message: 'Tweet not found'};
+    it('Test tweet response body 404', async () => {
+        const expectedResponse = { message: 'Not Found', error: { status: 404 } };
+        const result = await chai.request(app).put('/tweets');
         expect(result.status).to.be.equal(404);
         expect(result).to.have.property('body');
         expect(result.body).to.be.deep.equals(expectedResponse);
         expect(result).to.have.property('status', 404);
-    });
-    it('Error 401 if you are not the owner', async () => {
-        const newObjectId = mongoose.Types.ObjectId();
-        const result = await chai.request(app).put(`/tweets/${newObjectId}`);
-        const expectedResponse = { message: 'You are not the owner of the resource'};
-        expect(result.status).to.be.equal(401);
-        expect(result).to.have.property('body');
-        expect(result.body).to.be.deep.equals(expectedResponse);
-        expect(result).to.have.property('status', 401);
+        expect(result.body).to.be.instanceOf(Object);
+        expectJson(result);
     });
 });

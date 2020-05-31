@@ -38,7 +38,7 @@ router.post('/',autenticationMiddleware.isAuth, [
   });
 });
 
-router.put('/:id', autenticationMiddleware.isAuth, [
+router.put('/:id', [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   Tweet.findOne({_id: req.params.id}).exec(function(err, tweet) {
@@ -67,7 +67,7 @@ router.put('/:id', autenticationMiddleware.isAuth, [
   });
 });
 
-router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
+router.delete('/:id', function(req, res, next) {
   Tweet.findOne({_id: req.params.id}).exec(function(err, tweet) {
     if (err) {
       return res.status(500).json({

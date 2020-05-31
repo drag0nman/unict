@@ -5,6 +5,7 @@ const app = require('../../app');
 const { expectJson, createUser } = require('./utils/index');
 const User = require('../../models/user');
 const crypto = require('crypto');
+const { expectJson } = require('./utils/index');
 const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
@@ -28,8 +29,7 @@ describe('[show] Get: /users/:id', () => {
         expect(result).to.have.property('body');
         expect(result.body).to.be.deep.equals(expectedResponse);
         expect(result).to.have.property('status', 404);
-        expect(result.header).to.has.property('content-type');
-        expect(result.header['content-type']).contains('application/json');
+        expectJson(result);
     });
 });
 
