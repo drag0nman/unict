@@ -28,31 +28,3 @@ describe("GET: /tweets", () => {
     });
   });
 });
-
-describe('[DELETE] DELETE: /tweets/:id', () => {
-  it('should return 404 status if user don\'t exists', async () => {
-    const newObjectId = mongoose.Types.ObjectId();
-    const result = await chai.request(app)
-        .delete(`/users/${newObjectId}`);
-    expect(result).to.have.property('status', 404);
-    expect(result).to.have.property('body');
-    expect(result.body).to.be.deep.equals(expectedNotFoundError);
-  });
-  describe('With an existing user', () => {
-    let createdTweet = undefined;
-    beforeEach('create tweet', async () => {
-      createdTweet = await createTweet();
-    });
-    afterEach('delete tweet', () => {
-      createdTweet ? createdTweet.remove() : console.log('missing tweet');
-    });
-    it('Delete existing tweet', async () => {
-      const result = await chai.request(app)
-          .delete(`/tweets/${createdTweet._id.toString()}`);
-      expect(result).to.have.property('status', 200);
-      expect(result).to.have.property('body');
-      expect(result.body).to.be.deep.equals({message: 'Tweet deleted'})
-    });
-  })
-  
-});
