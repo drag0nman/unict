@@ -5,6 +5,7 @@ const app = require('../../app');
 const { expectJson, createUser } = require('./utils/index');
 const User = require('../../models/user');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
@@ -81,3 +82,78 @@ describe('Post /users', () => {
         expectJson(result);
     });
 });
+describe('Put /users', () => {
+    let createdUser = undefined;
+    before('create user', async () => {
+        createdUser = await createUser();
+    });
+    after('delete user', async () => {
+        createdUser ? await User.deleteMany() : console.log('missing user');
+    });
+    it('Test users response body 404', async () => {
+        const expectedResponse = { message: 'Not Found', error: { status: 404 } };
+        const result = await chai.request(app).put('/users');
+        expect(result).to.have.property('body');
+        expect(result).to.have.property('status', 404);
+        expect(result.body).to.be.instanceOf(Object);
+        expect(result.body).to.be.deep.equal(expectedResponse);
+        expect(result.status).to.be.equal(404);
+        expectJson(result);
+    });
+    it('Test users error 500', async () => {
+        const result = await chai.request(app).put(`/users/h`);
+        expect(result.status).to.be.equal(500);
+        expect(result).to.have.property('status', 500);
+        expectJson(result);
+    });
+    it('Update user', async () => {
+        const newUser = {
+            name: 'gabry',
+            surname: 'Zaga',
+            email: 'gabry@gmail.com',
+            password: 'zagarella'
+        };
+        const result = await chai.request(app).put(`/users/${createdUser._id.toString()}`).send(newUser);
+        const updatedUser = await User.findById(result.body._id);
+        expect(result).to.have.property('body');
+        expect(result).to.have.property('status', 200);
+        expect(result.body).to.be.instanceOf(Object);
+        expect(newUser).to.be.not.undefined;
+        expect(updatedUser).to.has.property('name', newUser.name);
+        expect(updatedUser).to.has.property('surname', newUser.surname);
+        expect(updatedUser).to.has.property('password', newUser.password);
+        expect(updatedUser).to.has.property('email', newUser.email);
+        expectJson(result);
+    });
+});
+
+describe('DELETE: /users/:id', () => {
+    let createdUser = undefined;
+    beforeEach('create user', async () => {
+        createdUser = await createUser();
+    });
+    afterEach('delete user', () => {
+        createdUser ? createdUser.remove() : console.log('missing user');
+    });
+    it('Test users response body 404', async () => {
+        const newObjectId = mongoose.Types.ObjectId();
+        const expectedResponse = { message: 'User non found' };
+        const result = await chai.request(app).delete(`/users/${newObjectId}`);
+        expect(result).to.have.property('body');
+        expect(result).to.have.property('status', 404);
+        expect(result.body).to.be.instanceOf(Object);
+        expect(result.body).to.be.deep.equal(expectedResponse);
+        expect(result.status).to.be.equal(404);
+        expectJson(result);
+    });
+    it('Delete existing user', async () => {
+        const result = await chai.request(app).delete(`/users/${createdUser._id.toString()}`);
+        const expectedResponse = { message: 'User successfully deleted'};
+        expect(result).to.have.property('body');
+        expect(result).to.have.property('status', 200);
+        expect(result.body).to.be.instanceOf(Object);
+        expect(result.body).to.be.deep.equals(expectedResponse);
+        expectJson(result);
+    });
+});
+
