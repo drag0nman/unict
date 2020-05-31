@@ -43,14 +43,17 @@ describe('Post /login', () => {
         expectJson(result);
     });
      it('Test index login', async () => {
-        const newUSer = {
+        const newUser = {
             email: 'gabryzaga20@gmail.com',
             password: 'gabriele'
         }
-        const result = await chai.request(app).post('/login').send(newUSer);
+        const result = await chai.request(app).post('/login').send(newUser);
         expect(result).to.have.property('body');
         expect(result).to.have.property('status', 200);
         expect(result.body).to.be.instanceOf(Object);
+        expect(newUser).to.be.not.undefined;
+        expect(newUser).to.has.property('email', newUser.email);
+        expect(newUser).to.has.property('password', newUser.password);
         expectJson(result);
     });
 });
