@@ -2,9 +2,10 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = chai.expect;
 const app = require("../../app");
-const { expectJson, createTweet } = require("./utils/index");
+const { expectJson, createTweet, createUser } = require("./utils/index");
 const Tweet = require("../../models/tweet");
 const mongoose = require("mongoose");
+const JWT_SECRET = "secret";
 
 chai.use(chaiHttp);
 
@@ -52,24 +53,25 @@ describe("Post /tweet", () => {
   });
   describe.skip("save new tweet Post /tweets", () => {
     let createdTweet = undefined;
+    let user = undefined;
     before("create user", async () => {
       createdTweet = await createTweet();
+      user = await createUser()
+      accessToken = jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn: '1 hour'})
     });
     after("delete tweet", async () => {
       createdTweet ? await Tweet.deleteMany() : console.log("missing tweet");
     });
     it("save new tweet inside database", async () => {
       const newTweet = {
-        _author: mongoose.Types.ObjectId(),
+        // _author: mongoose.Types.ObjectId(),
         tweet: "Welcome all!"
       };
-      const result = await chai.request(app).post(`/tweets`).send(newTweet);
+      const result = await chai.request(app).post(`/tweets`).set('Authorization', `Bearer ${accessToken}`).send(newTweet);
       expect(result).to.have.property("body");
       expect(result).to.have.property("status", 201);
       expect(result.body).to.be.instanceOf(Object);
       expect(newTweet).to.be.not.undefined;
-      expect(newTweet).to.has.property("_author");
-      expect(newTweet).to.has.property("tweet");
       expectJson(result);
     });
   });

@@ -19,6 +19,22 @@ describe('Get: /users', () => {
     })
 })
 
+describe('Get: /users', () => {
+        let createdUser = undefined;
+        before('create user', async () => {
+            createdUser = await createUser();
+        });
+        after('delete user', async () => {
+            createdUser ? await User.deleteMany() : console.log('missing user');
+        });
+        it('Status 200 get users', async () => {
+            const result = await chai.request(app).get('/users');
+            expect(result).to.have.property('body');
+            expect(result).to.have.property('status', 200);
+            expectJson(result);
+        });
+    });
+
 describe('[show] Get: /users/:id', () => {
     it('Status 404 if errate user', async () => {
         const newObjectId = mongoose.Types.ObjectId();
@@ -30,6 +46,19 @@ describe('[show] Get: /users/:id', () => {
         expect(result).to.have.property('status', 404);
         expectJson(result);
     });
+    let createdUser = undefined;
+    before('create user', async () => {
+        createdUser = await createUser();
+    });
+    after('delete user', async () => {
+        createdUser ? await User.deleteMany() : console.log('missing user');
+    });
+    it('Status 200 get users by id', async () => {
+        const result = await chai.request(app).get(`/users/${createdUser._id.toString()}`);
+        expect(result).to.have.property('body');
+        expect(result).to.have.property('status', 200);
+        expectJson(result);
+    });
 });
 
 describe('Post /users', () => {
